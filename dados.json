@@ -20,20 +20,20 @@
     },
     "14/05": {
       "Jaqueline Tais Reimundo": {
-        "t": 2,
-        "apr": 1,
-        "rep": 1,
+        "t": 5,
+        "apr": 2,
+        "rep": 3,
         "pot": 0,
         "tub": 0,
-        "pct": 9.5
+        "pct": 23.8
       },
       "Marileia Goettems": {
-        "t": 8,
-        "apr": 7,
-        "rep": 1,
+        "t": 3,
+        "apr": 1,
+        "rep": 2,
         "pot": 0,
         "tub": 0,
-        "pct": 38.1
+        "pct": 14.3
       }
     },
     "12/05": {
@@ -47,5 +47,5 @@
       }
     }
   },
-  "ultima_atualizacao": "15/05/2026 18:52"
+  "ultima_atualizacao": "15/05/2026 19:44"
 }
