@@ -37,14 +37,16 @@ body{min-height:100vh}
 .date-wrap{padding:10px 16px 0;border-bottom:1px solid var(--border);background:var(--white)}
 .date-scroll{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .date-scroll::-webkit-scrollbar{display:none}
-.dtab{background:transparent;border:1px solid var(--border);border-bottom:none;border-radius:6px 6px 0 0;color:var(--muted);font-size:11px;font-family:var(--mono);padding:6px 12px;cursor:pointer;white-space:nowrap;flex-shrink:0;font-weight:600}
+.dtab{background:transparent;border:1px solid var(--border);border-bottom:none;border-radius:6px 6px 0 0;color:var(--muted);font-size:11px;font-family:var(--mono);padding:6px 12px;cursor:pointer;white-space:nowrap;flex-shrink:0;font-weight:600;transition:all .15s}
 .dtab.active{background:var(--green);color:#fff;border-color:var(--green);border-bottom:1px solid var(--green);margin-bottom:-1px;font-weight:700}
+.dtab.selected{background:var(--green-light);color:var(--green-dark);border-color:var(--green);font-weight:700}
 
 /* SETOR */
 .setor-wrap{padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:var(--white)}
 .setor-label{font-size:11px;color:var(--muted);font-family:var(--mono);font-weight:600}
-.stab{background:transparent;border:1px solid var(--border);border-radius:20px;color:var(--muted);font-size:11px;font-weight:700;padding:5px 12px;cursor:pointer;white-space:nowrap;font-family:var(--font)}
+.stab{background:transparent;border:1px solid var(--border);border-radius:20px;color:var(--muted);font-size:11px;font-weight:700;padding:5px 12px;cursor:pointer;white-space:nowrap;font-family:var(--font);transition:all .15s}
 .stab.active{background:var(--green);color:#fff;border-color:var(--green)}
+.multi-hint{font-size:10px;color:var(--muted);font-family:var(--mono);padding:4px 8px;font-weight:600}
 
 /* MAIN */
 .main{padding:16px}
@@ -174,10 +176,11 @@ body{min-height:100vh}
   <div class="date-wrap"><div class="date-scroll" id="date-tabs"></div></div>
   <div class="setor-wrap">
     <span class="setor-label">Setor:</span>
-    <button class="stab active" onclick="setSetor(this,'todos')">Todos</button>
-    <button class="stab" onclick="setSetor(this,'montagem')">Potência e Tubular</button>
-    <button class="stab" onclick="setSetor(this,'apoio')">Apoio 3</button>
-    <button class="stab" onclick="setSetor(this,'almo')">Almoxarifado</button>
+    <button class="stab active" id="stab-todos" onclick="toggleSetor('todos')">Todos</button>
+    <button class="stab" id="stab-montagem" onclick="toggleSetor('montagem')">Potência e Tubular</button>
+    <button class="stab" id="stab-apoio" onclick="toggleSetor('apoio')">Apoio 3</button>
+    <button class="stab" id="stab-almo" onclick="toggleSetor('almo')">Almoxarifado</button>
+    <span class="multi-hint">clique para combinar</span>
   </div>
   <div class="main">
     <div class="kpi-grid" id="kpi-grid"><div class="loading-msg">Carregando dados...</div></div>
@@ -250,7 +253,7 @@ const inspDef={
   'Naiara Rossa':              {setor:'almo',    setorLabel:'Almoxarifado',              init:'NR'},
 };
 
-let dadosGlobal={dias:{}},currentDate='geral',currentSetor='todos';
+let dadosGlobal={dias:{}},currentDates=['geral'],currentSetores=['todos'];
 
 const pColor=p=>p>=100?'#1CB85A':p>=85?'#c97a00':'#c0392b';
 const bClass=p=>p>=100?'b-green':p>=85?'b-amber':'b-red';
@@ -281,36 +284,41 @@ function inicializar(){
   const wrap=document.getElementById('date-tabs');wrap.innerHTML='';
   dias.forEach(d=>{
     const btn=document.createElement('button');
-    btn.className='dtab'+(d===currentDate?' active':'');
+    const isActive=currentDates.includes(d)&&!currentDates.includes('geral');
+    btn.className='dtab'+(isActive?' selected':'');
+    btn.setAttribute('data-date',d);
     btn.textContent=d;btn.onclick=()=>setDate(btn,d);wrap.appendChild(btn);
   });
   const g=document.createElement('button');
-  g.className='dtab'+(currentDate==='geral'?' active':'');
+  g.className='dtab'+(currentDates.includes('geral')?' active':'');
+  g.setAttribute('data-date','geral');
   g.textContent='Geral';g.onclick=()=>setDate(g,'geral');wrap.appendChild(g);
   preencherFiltrosRelatorio(dias);
   render();
 }
 
-function getDadosDia(name,date){
+function getDadosDia(name,dates){
   const dias=dadosGlobal.dias||{};
-  if(date==='geral'){
-    const entries=Object.values(dias).map(d=>d[name]).filter(Boolean);
-    if(!entries.length)return{t:0,apr:0,rep:0,pot:0,tub:0,noData:true};
-    return{t:entries.reduce((a,b)=>a+b.t,0),apr:entries.reduce((a,b)=>a+b.apr,0),
-           rep:entries.reduce((a,b)=>a+b.rep,0),pot:entries.reduce((a,b)=>a+(b.pot||0),0),
-           tub:entries.reduce((a,b)=>a+(b.tub||0),0),dias:entries.length};
-  }
-  const d=(dias[date]||{})[name];
-  if(!d)return{t:0,apr:0,rep:0,pot:0,tub:0,noData:true};
-  return{...d,dias:1};
+  // Se 'geral' ou múltiplas datas
+  const useDates=dates.includes('geral')?Object.keys(dias):dates;
+  const entries=useDates.map(d=>(dias[d]||{})[name]).filter(Boolean);
+  if(!entries.length)return{t:0,apr:0,rep:0,pot:0,tub:0,noData:true};
+  return{
+    t:entries.reduce((a,b)=>a+b.t,0),
+    apr:entries.reduce((a,b)=>a+b.apr,0),
+    rep:entries.reduce((a,b)=>a+b.rep,0),
+    pot:entries.reduce((a,b)=>a+(b.pot||0),0),
+    tub:entries.reduce((a,b)=>a+(b.tub||0),0),
+    dias:entries.length
+  };
 }
 
 function render(){
   const dias=dadosGlobal.dias||{};
   const todosInsp=[...new Set(Object.values(dias).flatMap(d=>Object.keys(d)))];
   Object.keys(inspDef).forEach(n=>{if(!todosInsp.includes(n))todosInsp.push(n)});
-  const names=todosInsp.filter(n=>currentSetor==='todos'||getSetor(n)===currentSetor);
-  const data={};names.forEach(n=>data[n]=getDadosDia(n,currentDate));
+  const names=todosInsp.filter(n=>currentSetores.includes('todos')||currentSetores.includes(getSetor(n)));
+  const data={};names.forEach(n=>data[n]=getDadosDia(n,currentDates));
   const withData=names.filter(n=>data[n].t>0);
   const tI=withData.reduce((a,n)=>a+data[n].t,0);
   const tA=withData.reduce((a,n)=>a+data[n].apr,0);
@@ -321,7 +329,8 @@ function render(){
   const ati=withData.filter(n=>data[n].t>=META_MIN&&data[n].t<META).length;
   const aba=withData.filter(n=>data[n].t>0&&data[n].t<META_MIN).length;
   const aP=tI?Math.round(tA/tI*100):0;
-  document.getElementById('period-label').textContent=currentDate==='geral'?'período completo':'dia '+currentDate+'/2026';
+  const periodLabel=currentDates.includes('geral')?'período completo':currentDates.length===1?'dia '+currentDates[0]+'/2026':currentDates.length+' dias selecionados';
+  document.getElementById('period-label').textContent=periodLabel;
   document.getElementById('kpi-grid').innerHTML=`
     <div class="kpi-card"><div class="klabel">Realizadas</div><div class="kval">${tI.toLocaleString('pt-BR')}</div><div class="ksub">meta · ${tM.toLocaleString('pt-BR')}</div><div class="prog"><div class="prog-fill" style="width:${Math.min(100,pG)}%"></div></div></div>
     <div class="kpi-card"><div class="klabel">% da meta</div><div class="kval kpi-pct">${pG}%</div><div class="ksub">${withData.length} com dados</div></div>
@@ -383,8 +392,53 @@ function render(){
   });
 }
 
-function setDate(btn,d){document.querySelectorAll('.dtab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentDate=d;render();}
-function setSetor(btn,s){document.querySelectorAll('.stab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentSetor=s;render();}
+function setDate(btn,d){
+  if(d==='geral'){
+    // Geral reseta tudo
+    currentDates=['geral'];
+    document.querySelectorAll('.dtab').forEach(b=>{b.classList.remove('active');b.classList.remove('selected')});
+    btn.classList.add('active');
+  } else {
+    // Remove 'geral' se selecionado
+    const geralBtn=document.querySelector('.dtab[data-date="geral"]');
+    if(geralBtn){geralBtn.classList.remove('active');}
+    currentDates=currentDates.filter(x=>x!=='geral');
+    
+    if(currentDates.includes(d)){
+      // Deselecionar
+      currentDates=currentDates.filter(x=>x!==d);
+      btn.classList.remove('active');btn.classList.remove('selected');
+      if(currentDates.length===0){currentDates=['geral'];if(geralBtn)geralBtn.classList.add('active');}
+    } else {
+      // Selecionar
+      currentDates.push(d);
+      btn.classList.remove('active');btn.classList.add('selected');
+    }
+  }
+  render();
+}
+
+function toggleSetor(s){
+  if(s==='todos'){
+    currentSetores=['todos'];
+    document.querySelectorAll('.stab').forEach(b=>b.classList.remove('active'));
+    document.getElementById('stab-todos').classList.add('active');
+  } else {
+    // Remove 'todos'
+    currentSetores=currentSetores.filter(x=>x!=='todos');
+    document.getElementById('stab-todos').classList.remove('active');
+    
+    if(currentSetores.includes(s)){
+      currentSetores=currentSetores.filter(x=>x!==s);
+      document.getElementById('stab-'+s).classList.remove('active');
+      if(currentSetores.length===0){currentSetores=['todos'];document.getElementById('stab-todos').classList.add('active');}
+    } else {
+      currentSetores.push(s);
+      document.getElementById('stab-'+s).classList.add('active');
+    }
+  }
+  render();
+}
 
 function showTab(tab){
   document.getElementById('view-dash').style.display=tab==='dash'?'block':'none';
