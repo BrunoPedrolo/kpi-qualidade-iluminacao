@@ -139,25 +139,75 @@ def salvar_dados_github(dados, sha=None):
 def processar_xlsx(file):
     df = pd.read_excel(file)
 
+    # Normalizar nomes das colunas (remover espaços extras)
+    df.columns = df.columns.str.strip()
+
+    # Verificar coluna de item (pode ter variações)
+    col_item = None
+    for c in df.columns:
+        if 'item' in c.lower():
+            col_item = c
+            break
+    if col_item is None:
+        raise Exception(f"Coluna 'Item' não encontrada. Colunas disponíveis: {list(df.columns)}")
+
+    col_avaliacao = None
+    for c in df.columns:
+        if 'avalia' in c.lower() and 'digo' in c.lower():
+            col_avaliacao = c
+            break
+    if col_avaliacao is None:
+        col_avaliacao = 'Código da avaliação'
+
+    col_resposta = None
+    for c in df.columns:
+        if 'resposta' in c.lower():
+            col_resposta = c
+            break
+    if col_resposta is None:
+        col_resposta = 'Resposta'
+
+    col_data = None
+    for c in df.columns:
+        if 'data' in c.lower() and 'ini' in c.lower():
+            col_data = c
+            break
+    if col_data is None:
+        col_data = 'Data inicial'
+
     # Filtrar pelo item de aprovação
-    aprovacao = df[df['Item'] == 'Aprovação geral da etapa inspecionada.'].copy()
-    aprovacao['Data inicial'] = pd.to_datetime(aprovacao['Data inicial'], dayfirst=True, errors='coerce')
-    aprovacao['Data'] = aprovacao['Data inicial'].dt.strftime('%d/%m')
+    aprovacao = df[df[col_item].astype(str).str.contains('Aprovação geral', case=False, na=False)].copy()
+    aprovacao[col_data] = pd.to_datetime(aprovacao[col_data], dayfirst=True, errors='coerce')
+    aprovacao['Data'] = aprovacao[col_data].dt.strftime('%d/%m')
 
     # Identificar reprovados (checklists com algum "Não")
-    nao_ids = set(df[df['Resposta'] == 'Não']['Código da avaliação'].unique())
-    aprovacao['resultado'] = aprovacao['Código da avaliação'].apply(
+    nao_ids = set(df[df[col_resposta].astype(str).str.strip() == 'Não'][col_avaliacao].unique())
+    aprovacao['resultado'] = aprovacao[col_avaliacao].apply(
         lambda x: 'rep' if x in nao_ids else 'apr'
     )
 
     # Juntar com executor
-    executores = df[df['Item'] == 'Executor'][['Código da avaliação', 'Resposta']].copy()
-    executores.columns = ['Código da avaliação', 'Inspetor']
-    base = aprovacao.merge(executores, on='Código da avaliação', how='left')
+    executores = df[df[col_item].astype(str).str.contains('Executor', case=False, na=False)][[col_avaliacao, col_resposta]].copy()
+    executores.columns = [col_avaliacao, 'Inspetor']
+    base = aprovacao.merge(executores, on=col_avaliacao, how='left')
 
-    # Juntar com tipo de unidade
-    tipos = df[['Código da avaliação', 'Tipo de Unidade']].drop_duplicates()
-    base = base.merge(tipos, on='Código da avaliação', how='left')
+    # Renomear coluna de avaliação para padrão
+    if col_avaliacao != 'Código da avaliação':
+        base = base.rename(columns={col_avaliacao: 'Código da avaliação'})
+
+    # Juntar com tipo de unidade (se existir)
+    col_tipo = None
+    for c in df.columns:
+        if 'tipo' in c.lower() and 'unidade' in c.lower():
+            col_tipo = c
+            break
+
+    if col_tipo:
+        tipos = df[[col_avaliacao, col_tipo]].drop_duplicates()
+        tipos.columns = ['Código da avaliação', 'Tipo de Unidade']
+        base = base.merge(tipos, on='Código da avaliação', how='left')
+    else:
+        base['Tipo de Unidade'] = ''
 
     # Agrupar por inspetor e data
     resultado = {}
@@ -167,8 +217,8 @@ def processar_xlsx(file):
         total  = len(grupo)
         apr    = int((grupo['resultado'] == 'apr').sum())
         rep    = int((grupo['resultado'] == 'rep').sum())
-        pot    = int((grupo['Tipo de Unidade'] == 'Iluminação Potência').sum())
-        tub    = int((grupo['Tipo de Unidade'] == 'Iluminação Tubular').sum())
+        pot    = int((grupo['Tipo de Unidade'] == 'Iluminação Potência').sum()) if 'Tipo de Unidade' in grupo.columns else 0
+        tub    = int((grupo['Tipo de Unidade'] == 'Iluminação Tubular').sum()) if 'Tipo de Unidade' in grupo.columns else 0
         pct    = round(total / META * 100, 1)
 
         if data not in resultado:
