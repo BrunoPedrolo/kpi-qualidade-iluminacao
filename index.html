@@ -284,7 +284,7 @@ async function enviarUpload(){
       ur.className='upload-result ok';
       ur.innerHTML='✅ '+j.mensagem+'<br>Dias: '+j.dias_processados.join(', ');
       bs.textContent='✓ Enviado!';
-      setTimeout(()=>{fecharUpload();carregarDados();},2000);
+      setTimeout(()=>{fecharUpload();carregarDadosAPI();},1500);
     } else {
       ur.className='upload-result err';ur.innerHTML='❌ '+(j.erro||'Erro ao processar');
       bs.disabled=false;bs.textContent='Tentar novamente';
@@ -297,6 +297,14 @@ async function enviarUpload(){
 }
 carregarDados();
 setInterval(carregarDados,5*60*1000);
+
+async function carregarDadosAPI(){
+  try{
+    const r=await fetch(API_URL+'/dados?t='+Date.now());
+    if(r.ok){dadosGlobal=await r.json();inicializar();return;}
+  }catch(e){}
+  carregarDados();
+}
 </script>
 </body>
 </html>
