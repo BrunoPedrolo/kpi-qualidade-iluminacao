@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, redirect, send_file
 from flask_cors import CORS
 import pandas as pd
 import json
@@ -6,9 +6,102 @@ import base64
 import requests
 from datetime import datetime
 import os
+import io
 
 app = Flask(__name__)
 CORS(app)
+
+DASHBOARD_URL = 'https://brunopedrolo.github.io/kpi-qualidade-iluminacao/'
+
+@app.route('/', methods=['GET'])
+def index():
+    return redirect(DASHBOARD_URL)
+
+@app.route('/upload-page', methods=['GET'])
+def upload_page():
+    html = """<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Upload · KPI Iluminação</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--green:#1a9e3f;--green-dark:#146b2a;--green-light:#e8f5ec;--border:#d4edda;--text:#1a2e1f;--muted:#5a7a62;--white:#fff;--font:'IBM Plex Sans',sans-serif;--mono:'IBM Plex Mono',monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:#f4faf6;color:var(--text);font-family:var(--font);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:32px;width:100%;max-width:480px;border-top:4px solid var(--green)}
+.header{text-align:center;margin-bottom:28px}
+.header h1{font-size:18px;font-weight:600;color:var(--green-dark);margin-bottom:4px}
+.header p{font-size:12px;color:var(--muted);font-family:var(--mono)}
+.drop-zone{border:2px dashed var(--border);border-radius:8px;padding:32px;text-align:center;cursor:pointer;background:var(--green-light);transition:all .2s;margin-bottom:12px}
+.drop-zone:hover,.drop-zone.drag{border-color:var(--green);background:#d4edda}
+.dicon{font-size:36px;margin-bottom:8px}
+.drop-zone p{font-size:13px;color:var(--muted);font-family:var(--mono)}
+.drop-zone strong{color:var(--green-dark)}
+input[type=file]{display:none}
+.file-name{font-size:12px;color:var(--green-dark);font-family:var(--mono);text-align:center;margin-bottom:12px;min-height:18px}
+.btn{width:100%;background:var(--green);color:#fff;border:none;border-radius:8px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font)}
+.btn:hover{background:var(--green-dark)}
+.btn:disabled{background:#aaa;cursor:not-allowed}
+.result{margin-top:14px;padding:12px 16px;border-radius:8px;font-size:12px;font-family:var(--mono);display:none}
+.ok{background:#e8f5ec;color:#146b2a;border:1px solid #b7dfc4}
+.err{background:#fdecea;color:#8b1a1a;border:1px solid #f5b8b8}
+.back{display:block;text-align:center;margin-top:16px;font-size:12px;color:var(--green);font-family:var(--mono);text-decoration:none}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="header">
+    <h1>⬆ Novo upload</h1>
+    <p>KPI · Qualidade · Iluminação · Zagonel</p>
+  </div>
+  <div class="drop-zone" id="dz" onclick="document.getElementById('fi').click()">
+    <div class="dicon">📄</div>
+    <p>Clique ou arraste o arquivo aqui</p>
+    <p><strong>.xlsx</strong> exportado do sistema</p>
+  </div>
+  <input type="file" id="fi" accept=".xlsx"/>
+  <div class="file-name" id="fn"></div>
+  <button class="btn" id="btn" disabled onclick="enviar()">Selecione um arquivo</button>
+  <div class="result" id="res"></div>
+  <a class="back" href="https://brunopedrolo.github.io/kpi-qualidade-iluminacao/">← Voltar ao dashboard</a>
+</div>
+<script>
+let file=null;
+const dz=document.getElementById('dz'),fi=document.getElementById('fi');
+const btn=document.getElementById('btn'),fn=document.getElementById('fn'),res=document.getElementById('res');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag')});
+dz.addEventListener('dragleave',()=>dz.classList.remove('drag'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag');const f=e.dataTransfer.files[0];if(f&&f.name.endsWith('.xlsx'))set(f)});
+fi.addEventListener('change',()=>{if(fi.files[0])set(fi.files[0])});
+function set(f){file=f;fn.textContent='📄 '+f.name;btn.disabled=false;btn.textContent='Enviar dados';res.style.display='none'}
+async function enviar(){
+  if(!file)return;
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Processando...';res.style.display='none';
+  const form=new FormData();form.append('file',file);
+  try{
+    const r=await fetch('/upload',{method:'POST',body:form});
+    const j=await r.json();
+    if(r.ok&&j.sucesso){
+      res.className='result ok';res.innerHTML='✅ '+j.mensagem+'<br>Dias: '+j.dias_processados.join(', ');
+      btn.textContent='✓ Enviado!';
+    }else{
+      res.className='result err';res.innerHTML='❌ '+(j.erro||'Erro ao processar');
+      btn.disabled=false;btn.textContent='Tentar novamente';
+    }
+  }catch(e){
+    res.className='result err';res.innerHTML='❌ Erro de conexão. Tente novamente.';
+    btn.disabled=false;btn.textContent='Tentar novamente';
+  }
+  res.style.display='block';
+}
+</script>
+</body>
+</html>"""
+    return html, 200, {'Content-Type': 'text/html'}
 
 GITHUB_TOKEN  = os.environ.get('GITHUB_TOKEN', '')
 GITHUB_USER   = 'BrunoPedrolo'
