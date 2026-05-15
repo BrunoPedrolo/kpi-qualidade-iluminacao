@@ -6,91 +6,143 @@
 <title>KPI · Qualidade · Iluminação</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
-:root{--green:#1CB85A;--green-dark:#158a42;--green-light:#eafaf1;--border:#c3eed4;--text:#1a2e1f;--muted:#5a7a62;--surface:#f4faf6;--white:#fff;--font:'Nunito',sans-serif;--mono:'DM Mono',monospace}
+:root{
+  --green:#1CB85A;--green-dark:#158a42;--green-light:#eafaf1;
+  --border:#c3eed4;--text:#1a2e1f;--muted:#5a7a62;
+  --surface:#f4faf6;--white:#fff;
+  --font:'Nunito',sans-serif;--mono:'DM Mono',monospace;
+}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{background:var(--surface);color:var(--text);font-family:var(--font);font-size:14px}
 body{min-height:100vh}
+
+/* TOPBAR */
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;background:var(--white);border-bottom:3px solid var(--green);position:sticky;top:0;z-index:100;gap:12px}
 .logo-cq img{height:80px;width:auto;display:block}
 .logo-zag img{height:44px;width:auto;display:block}
 .topbar-center{text-align:center;flex:1;min-width:0}
-.topbar-center h1{font-size:14px;font-weight:600;color:var(--green-dark);letter-spacing:-.01em}
+.topbar-center h1{font-size:15px;font-weight:800;color:var(--green-dark);letter-spacing:-.01em}
 .topbar-center p{font-size:11px;color:var(--muted);font-family:var(--mono);margin-top:2px}
-.topbar-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
-.btn-upload{background:var(--green);color:#fff;border:none;border-radius:6px;padding:7px 12px;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font);white-space:nowrap}
+.topbar-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.btn-upload{background:var(--green);color:#fff;border:none;border-radius:6px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font);display:flex;align-items:center;gap:5px;white-space:nowrap}
 .btn-upload:hover{background:var(--green-dark)}
+.last-up{font-size:10px;color:var(--muted);font-family:var(--mono);border:1px solid var(--border);border-radius:4px;padding:3px 8px;background:var(--green-light)}
+
+/* TABS */
+.main-tabs{background:var(--white);border-bottom:1px solid var(--border);padding:0 16px;display:flex;gap:0;position:sticky;top:103px;z-index:99}
+.mtab{font-family:var(--font);font-size:13px;font-weight:700;color:var(--muted);background:none;border:none;border-bottom:3px solid transparent;padding:11px 18px;cursor:pointer;margin-bottom:-1px;transition:all .15s}
+.mtab.active{color:var(--green);border-bottom-color:var(--green)}
+
+/* DATE TABS */
 .date-wrap{padding:10px 16px 0;border-bottom:1px solid var(--border);background:var(--white)}
 .date-scroll{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .date-scroll::-webkit-scrollbar{display:none}
-.dtab{background:transparent;border:1px solid var(--border);border-bottom:none;border-radius:6px 6px 0 0;color:var(--muted);font-size:11px;font-family:var(--mono);padding:6px 12px;cursor:pointer;white-space:nowrap;flex-shrink:0}
-.dtab.active{background:var(--green);color:#fff;border-color:var(--green);border-bottom:1px solid var(--green);margin-bottom:-1px;font-weight:500}
+.dtab{background:transparent;border:1px solid var(--border);border-bottom:none;border-radius:6px 6px 0 0;color:var(--muted);font-size:11px;font-family:var(--mono);padding:6px 12px;cursor:pointer;white-space:nowrap;flex-shrink:0;font-weight:600}
+.dtab.active{background:var(--green);color:#fff;border-color:var(--green);border-bottom:1px solid var(--green);margin-bottom:-1px;font-weight:700}
+
+/* SETOR */
 .setor-wrap{padding:10px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:var(--white)}
-.setor-label{font-size:11px;color:var(--muted);font-family:var(--mono)}
-.stab{background:transparent;border:1px solid var(--border);border-radius:20px;color:var(--muted);font-size:11px;padding:5px 12px;cursor:pointer;white-space:nowrap}
-.stab.active{background:var(--green);color:#fff;border-color:var(--green);font-weight:500}
+.setor-label{font-size:11px;color:var(--muted);font-family:var(--mono);font-weight:600}
+.stab{background:transparent;border:1px solid var(--border);border-radius:20px;color:var(--muted);font-size:11px;font-weight:700;padding:5px 12px;cursor:pointer;white-space:nowrap;font-family:var(--font)}
+.stab.active{background:var(--green);color:#fff;border-color:var(--green)}
+
+/* MAIN */
 .main{padding:16px}
+
+/* KPI GRID */
 .kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px}
 @media(min-width:900px){.kpi-grid{grid-template-columns:repeat(4,1fr)}}
-.kpi-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:12px;border-top:3px solid var(--green)}
-.kpi-card .label{font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px}
-.kpi-card .val{font-size:22px;font-weight:600;font-family:var(--mono);line-height:1;color:var(--green-dark)}
-.kpi-card .sub{font-size:11px;color:var(--muted);margin-top:4px;font-family:var(--mono)}
+.kpi-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px;border-top:3px solid var(--green)}
+.kpi-card .klabel{font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-weight:600}
+.kpi-card .kval{font-size:24px;font-weight:800;line-height:1;color:var(--green-dark)}
+.kpi-card .ksub{font-size:11px;color:var(--muted);margin-top:4px;font-family:var(--mono)}
 .kpi-pct{color:var(--green)!important}
-.prog{width:100%;height:3px;background:var(--border);border-radius:2px;margin-top:8px;overflow:hidden}
+.prog{width:100%;height:4px;background:var(--border);border-radius:2px;margin-top:8px;overflow:hidden}
 .prog-fill{height:100%;border-radius:2px;background:var(--green)}
 .status-list{display:flex;flex-direction:column;gap:4px;margin-top:2px}
-.s-item{display:flex;align-items:center;gap:6px;font-size:11px;padding:4px 7px;border-radius:4px;font-family:var(--mono)}
+.s-item{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;padding:4px 8px;border-radius:5px;font-family:var(--font)}
 .s-green{background:#e8f5ec;color:#146b2a}
 .s-amber{background:#fef9e7;color:#875a00}
 .s-red{background:#fdecea;color:#8b1a1a}
-.apr-row{display:flex;gap:16px;margin-top:5px}
-.apr-item .av{font-size:20px;font-weight:600;font-family:var(--mono);line-height:1}
+.apr-row{display:flex;gap:16px;margin-top:6px}
+.apr-item .av{font-size:20px;font-weight:800;line-height:1}
 .apr-item .al{font-size:10px;color:var(--muted);font-family:var(--mono);margin-top:2px}
+.dot{width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:4px}
+
+/* SEC HDR */
 .sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.sec-hdr span{font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em}
-.insp-grid{display:grid;grid-template-columns:1fr;gap:8px}
+.sec-hdr span{font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+
+/* INSP GRID */
+.insp-grid{display:grid;grid-template-columns:1fr;gap:10px}
 @media(min-width:540px){.insp-grid{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:900px){.insp-grid{grid-template-columns:repeat(3,1fr)}}
-.icard{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:12px;border-left:3px solid var(--green)}
-.icard.pending{opacity:.4;border-left-color:var(--border);border-style:dashed}
-.icard-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:6px}
-.icard-info{display:flex;align-items:center;gap:8px}
-.avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;font-family:var(--mono);flex-shrink:0;background:var(--green-light);color:var(--green-dark)}
-.icard-name{font-size:12px;font-weight:600;color:var(--text)}
-.badge{font-size:10px;font-weight:500;padding:3px 7px;border-radius:4px;white-space:nowrap;font-family:var(--mono)}
+
+/* INSP CARD — estilo da imagem de referência */
+.icard{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:14px}
+.icard.pending{opacity:.4;border-style:dashed}
+.icard-hdr{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.icard-info{display:flex;align-items:center;gap:10px}
+.avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;background:var(--green-light);color:var(--green-dark);border:2px solid var(--border)}
+.icard-name{font-size:13px;font-weight:800;color:var(--text);line-height:1.2}
+.icard-sub{font-size:11px;color:var(--green);font-weight:600;margin-top:1px}
+.badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:5px;white-space:nowrap;font-family:var(--font)}
 .b-green{background:#e8f5ec;color:#146b2a}
 .b-amber{background:#fef9e7;color:#875a00}
 .b-red{background:#fdecea;color:#8b1a1a}
-.setor-tag{display:inline-block;font-size:10px;font-family:var(--mono);padding:2px 7px;border-radius:3px;margin-bottom:8px;background:var(--green-light);color:var(--green-dark)}
-.ipct{font-size:32px;font-weight:600;font-family:var(--mono);line-height:1;margin-bottom:2px}
-.icount{font-size:11px;color:var(--muted);font-family:var(--mono);margin-bottom:6px}
-.ibar{width:100%;height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:8px}
+.ipct{font-size:36px;font-weight:800;line-height:1;margin-bottom:2px}
+.icount{font-size:11px;color:var(--muted);font-family:var(--mono);margin-bottom:8px;font-weight:600}
+.ibar-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;font-size:11px;font-weight:600}
+.ibar-label{color:var(--muted);flex:1}
+.ibar-wrap{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin:0 8px}
 .ibar-fill{height:100%;border-radius:2px}
-.idetail{display:flex;gap:8px;font-size:11px;font-family:var(--mono);margin-bottom:8px;flex-wrap:wrap}
-.ifooter{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border);padding-top:8px}
+.ibar-pct{color:var(--muted);font-family:var(--mono);width:36px;text-align:right}
+.ibar-count{color:var(--text);font-family:var(--mono);font-weight:700;width:24px;text-align:right}
+.ifooter{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border);padding-top:10px;margin-top:8px}
 .ifooter-item{text-align:center}
-.ifooter-val{font-size:14px;font-weight:600;font-family:var(--mono);color:var(--green-dark)}
-.ifooter-lbl{font-size:9px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
+.ifooter-val{font-size:15px;font-weight:800;color:var(--green-dark)}
+.ifooter-lbl{font-size:9px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;font-weight:600}
 .pending-msg{font-size:11px;color:#aaa;text-align:center;padding:16px 0;font-family:var(--mono)}
-.dot{width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:4px}
 .loading-msg{text-align:center;padding:40px;font-family:var(--mono);color:var(--muted);font-size:13px;grid-column:1/-1}
+.setor-tag{display:inline-block;font-size:10px;font-family:var(--mono);padding:2px 7px;border-radius:3px;margin-bottom:8px;background:var(--green-light);color:var(--green-dark);font-weight:600}
+
+/* RELATÓRIO */
+.rel-filters{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px;display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+.rel-filter-group{display:flex;flex-direction:column;gap:4px;min-width:140px;flex:1}
+.rel-filter-group label{font-size:10px;font-weight:700;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em}
+.rel-select{font-family:var(--font);font-size:12px;font-weight:600;padding:8px 10px;border:1px solid var(--border);border-radius:6px;background:var(--white);color:var(--text);cursor:pointer;outline:none;width:100%}
+.rel-select:focus{border-color:var(--green)}
+.btn-gerar{background:var(--green);color:#fff;border:none;border-radius:6px;padding:9px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font);white-space:nowrap;align-self:flex-end}
+.btn-gerar:hover{background:var(--green-dark)}
+.rel-table-wrap{background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.rel-table{width:100%;border-collapse:collapse;font-size:12px}
+.rel-table th{padding:10px 12px;text-align:left;font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;font-weight:700;background:var(--green-light);border-bottom:1px solid var(--border)}
+.rel-table td{padding:9px 12px;border-bottom:1px solid var(--border);color:var(--text);font-family:var(--font)}
+.rel-table tr:last-child td{border-bottom:none}
+.rel-table tr:hover td{background:var(--green-light)}
+.rel-summary{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
+@media(min-width:600px){.rel-summary{grid-template-columns:repeat(4,1fr)}}
+.rel-sum-card{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:10px 12px;border-top:3px solid var(--green)}
+.rel-sum-card .rsl{font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;font-weight:600;margin-bottom:4px}
+.rel-sum-card .rsv{font-size:20px;font-weight:800;color:var(--green-dark)}
+
 /* MODAL */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center;padding:20px}
 .modal-bg.open{display:flex}
 .modal{background:var(--white);border-radius:12px;padding:28px;width:100%;max-width:420px}
-.modal h2{font-size:16px;font-weight:600;color:var(--green-dark);margin-bottom:4px}
+.modal h2{font-size:16px;font-weight:800;color:var(--green-dark);margin-bottom:4px}
 .modal-sub{font-size:11px;color:var(--muted);font-family:var(--mono);margin-bottom:20px}
 .drop-zone{border:2px dashed var(--border);border-radius:8px;padding:24px;text-align:center;cursor:pointer;background:var(--green-light);transition:all .2s;margin-bottom:12px}
 .drop-zone:hover,.drop-zone.drag{border-color:var(--green);background:#d4edda}
 .dicon{font-size:28px;margin-bottom:6px}
-.drop-zone p{font-size:12px;color:var(--muted);font-family:var(--mono)}
+.drop-zone p{font-size:12px;color:var(--muted);font-family:var(--mono);font-weight:600}
 .drop-zone strong{color:var(--green-dark)}
-.file-name-lbl{font-size:11px;color:var(--green-dark);font-family:var(--mono);text-align:center;min-height:16px;margin-bottom:10px}
-.btn-send{width:100%;background:var(--green);color:#fff;border:none;border-radius:8px;padding:11px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font)}
+.file-name-lbl{font-size:11px;color:var(--green-dark);font-family:var(--mono);text-align:center;min-height:16px;margin-bottom:10px;font-weight:600}
+.btn-send{width:100%;background:var(--green);color:#fff;border:none;border-radius:8px;padding:11px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font)}
 .btn-send:hover{background:var(--green-dark)}
 .btn-send:disabled{background:#aaa;cursor:not-allowed}
-.btn-cancel{width:100%;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:9px;font-size:12px;cursor:pointer;font-family:var(--font);margin-top:8px}
-.upload-result{margin-top:12px;padding:10px 14px;border-radius:8px;font-size:11px;font-family:var(--mono);display:none}
+.btn-cancel{width:100%;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:9px;font-size:12px;cursor:pointer;font-family:var(--font);margin-top:8px;font-weight:600}
+.upload-result{margin-top:12px;padding:10px 14px;border-radius:8px;font-size:11px;font-family:var(--mono);display:none;font-weight:600}
 .upload-result.ok{background:#e8f5ec;color:#146b2a;border:1px solid #b7dfc4}
 .upload-result.err{background:#fdecea;color:#8b1a1a;border:1px solid #f5b8b8}
 .spinner{display:inline-block;width:14px;height:14px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:5px}
@@ -111,36 +163,57 @@ body{min-height:100vh}
   </div>
 </div>
 
-<div style="background:var(--white);border-bottom:2px solid var(--border);padding:0 16px;display:flex;gap:0">
-  <button id="tab-dashboard" onclick="showTab('dashboard')" style="font-family:var(--font);font-size:13px;font-weight:700;color:var(--green);background:none;border:none;border-bottom:3px solid var(--green);padding:12px 20px;cursor:pointer;margin-bottom:-2px">Dashboard</button>
-  <button id="tab-relatorio" onclick="showTab('relatorio')" style="font-family:var(--font);font-size:13px;font-weight:700;color:var(--muted);background:none;border:none;border-bottom:3px solid transparent;padding:12px 20px;cursor:pointer;margin-bottom:-2px">📋 Relatório Individual</button>
+<!-- TABS PRINCIPAIS -->
+<div class="main-tabs">
+  <button class="mtab active" id="tab-dash" onclick="showTab('dash')">Dashboard</button>
+  <button class="mtab" id="tab-rel" onclick="showTab('rel')">📋 Relatório Individual</button>
 </div>
 
-<div id="view-dashboard">
-<div class="date-wrap"><div class="date-scroll" id="date-tabs"></div></div>
-
-<div class="setor-wrap">
-  <span class="setor-label">Setor:</span>
-  <button class="stab active" onclick="setSetor(this,'todos')">Todos</button>
-  <button class="stab" onclick="setSetor(this,'montagem')">Potência e Tubular</button>
-  <button class="stab" onclick="setSetor(this,'apoio')">Apoio 3</button>
-  <button class="stab" onclick="setSetor(this,'almo')">Almoxarifado</button>
+<!-- VIEW DASHBOARD -->
+<div id="view-dash">
+  <div class="date-wrap"><div class="date-scroll" id="date-tabs"></div></div>
+  <div class="setor-wrap">
+    <span class="setor-label">Setor:</span>
+    <button class="stab active" onclick="setSetor(this,'todos')">Todos</button>
+    <button class="stab" onclick="setSetor(this,'montagem')">Potência e Tubular</button>
+    <button class="stab" onclick="setSetor(this,'apoio')">Apoio 3</button>
+    <button class="stab" onclick="setSetor(this,'almo')">Almoxarifado</button>
+  </div>
+  <div class="main">
+    <div class="kpi-grid" id="kpi-grid"><div class="loading-msg">Carregando dados...</div></div>
+    <div class="sec-hdr"><span>Inspetores</span><span id="period-label"></span></div>
+    <div class="insp-grid" id="insp-grid"></div>
+  </div>
 </div>
 
-<div class="main">
-  <div class="kpi-grid" id="kpi-grid"><div class="loading-msg">Carregando dados...</div></div>
-  <div class="sec-hdr"><span>Inspetores</span><span id="period-label"></span></div>
-  <div class="insp-grid" id="insp-grid"></div>
-</div>
-
-</div><!-- /view-dashboard -->
-
-<!-- RELATÓRIO INDIVIDUAL -->
-<div id="view-relatorio" style="display:none">
-  <div style="padding:20px 16px">
-    <div id="relatorio-content"><p style="color:var(--muted);font-family:var(--mono);font-size:12px;text-align:center;padding:40px">Selecione um inspetor abaixo para ver o relatório individual.</p></div>
-    <div id="relatorio-filtros" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px"></div>
-    <div id="relatorio-tabela"></div>
+<!-- VIEW RELATÓRIO -->
+<div id="view-rel" style="display:none">
+  <div class="main">
+    <div class="rel-filters">
+      <div class="rel-filter-group">
+        <label>Colaborador</label>
+        <select class="rel-select" id="rel-insp">
+          <option value="">Seleciona...</option>
+        </select>
+      </div>
+      <div class="rel-filter-group">
+        <label>Mês</label>
+        <select class="rel-select" id="rel-mes">
+          <option value="">Todos</option>
+        </select>
+      </div>
+      <div class="rel-filter-group">
+        <label>De</label>
+        <select class="rel-select" id="rel-de"></select>
+      </div>
+      <div class="rel-filter-group">
+        <label>Até</label>
+        <select class="rel-select" id="rel-ate"></select>
+      </div>
+      <button class="btn-gerar" onclick="gerarRelatorio()">Gerar relatório</button>
+    </div>
+    <div id="rel-summary" class="rel-summary" style="display:none"></div>
+    <div id="rel-table-wrap"></div>
   </div>
 </div>
 
@@ -166,19 +239,22 @@ body{min-height:100vh}
 const META=21,META_MIN=18;
 const API_URL='https://kpi-qualidade-iluminacao.onrender.com';
 const JSON_URL='https://raw.githubusercontent.com/BrunoPedrolo/kpi-qualidade-iluminacao/main/dados.json';
+
 const inspDef={
-  'Marileia Goettems':       {setor:'montagem',setorLabel:'Ilumin. Potência e Tubular',init:'MG'},
-  'Jaqueline Tais Reimundo': {setor:'montagem',setorLabel:'Ilumin. Potência e Tubular',init:'JR'},
-  'Jaqueline Reimundo':      {setor:'montagem',setorLabel:'Ilumin. Potência e Tubular',init:'JR'},
-  'Natan Soares':            {setor:'apoio',   setorLabel:'Apoio 3 e Ferramentaria',   init:'NS'},
-  'Maristela Poter':         {setor:'almo',    setorLabel:'Almoxarifado',              init:'MP'},
-  'Maristela Potter':        {setor:'almo',    setorLabel:'Almoxarifado',              init:'MP'},
-  'Naiara Rossa':            {setor:'almo',    setorLabel:'Almoxarifado',              init:'NR'},
+  'Marileia Goettems':         {setor:'montagem',setorLabel:'Ilumin. Potência e Tubular',init:'MG'},
+  'Jaqueline Tais Reimundo':   {setor:'montagem',setorLabel:'Ilumin. Potência e Tubular',init:'JR'},
+  'Jaqueline Reimundo':        {setor:'montagem',setorLabel:'Ilumin. Potência e Tubular',init:'JR'},
+  'Natan Soares':              {setor:'apoio',   setorLabel:'Apoio 3 e Ferramentaria',   init:'NS'},
+  'Maristela Poter':           {setor:'almo',    setorLabel:'Almoxarifado',              init:'MP'},
+  'Maristela Potter':          {setor:'almo',    setorLabel:'Almoxarifado',              init:'MP'},
+  'Naiara Rossa':              {setor:'almo',    setorLabel:'Almoxarifado',              init:'NR'},
 };
+
 let dadosGlobal={dias:{}},currentDate='geral',currentSetor='todos';
-const pColor=p=>p>=100?'#1a9e3f':p>=85?'#c97a00':'#c0392b';
+
+const pColor=p=>p>=100?'#1CB85A':p>=85?'#c97a00':'#c0392b';
 const bClass=p=>p>=100?'b-green':p>=85?'b-amber':'b-red';
-const bLabel=p=>p>=100?'▲ Superou':p>=85?'● Atingiu':'✕ Não atingiu';
+const bLabel=p=>p>=100?'● Superou':p>=85?'● Atingiu':'✕ Não atingiu';
 const getInit=n=>(inspDef[n]||{}).init||(n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase());
 const getSetor=n=>(inspDef[n]||{}).setor||'outros';
 const getSetorLabel=n=>(inspDef[n]||{}).setorLabel||'Outros';
@@ -186,11 +262,17 @@ const getSetorLabel=n=>(inspDef[n]||{}).setorLabel||'Outros';
 async function carregarDados(){
   try{const r=await fetch(JSON_URL+'?t='+Date.now());if(r.ok){dadosGlobal=await r.json();inicializar();return;}}catch(e){}
   try{const r=await fetch(API_URL+'/dados');if(r.ok){dadosGlobal=await r.json();inicializar();return;}}catch(e){}
-  document.getElementById('kpi-grid').innerHTML='<div class="loading-msg" style="color:#c0392b">Erro ao carregar. Recarregue a página.</div>';
+  document.getElementById('kpi-grid').innerHTML='<div class="loading-msg" style="color:#c0392b">Erro ao carregar. Recarregue.</div>';
+}
+
+async function carregarDadosAPI(){
+  try{const r=await fetch(API_URL+'/dados?t='+Date.now());if(r.ok){dadosGlobal=await r.json();inicializar();return;}}catch(e){}
+  carregarDados();
 }
 
 function inicializar(){
-  document.getElementById('ultima-at').textContent='Atualizado: '+(dadosGlobal.ultima_atualizacao||'—');
+  const ua=dadosGlobal.ultima_atualizacao||'—';
+  document.getElementById('ultima-at').textContent='Atualizado: '+ua;
   const dias=Object.keys(dadosGlobal.dias||{}).sort((a,b)=>{
     const[da,ma]=a.split('/').map(Number),[db,mb]=b.split('/').map(Number);
     return ma!==mb?ma-mb:da-db;
@@ -205,6 +287,7 @@ function inicializar(){
   const g=document.createElement('button');
   g.className='dtab'+(currentDate==='geral'?' active':'');
   g.textContent='Geral';g.onclick=()=>setDate(g,'geral');wrap.appendChild(g);
+  preencherFiltrosRelatorio(dias);
   render();
 }
 
@@ -212,11 +295,13 @@ function getDadosDia(name,date){
   const dias=dadosGlobal.dias||{};
   if(date==='geral'){
     const entries=Object.values(dias).map(d=>d[name]).filter(Boolean);
-    if(!entries.length)return{t:0,apr:0,rep:0,noData:true};
-    return{t:entries.reduce((a,b)=>a+b.t,0),apr:entries.reduce((a,b)=>a+b.apr,0),rep:entries.reduce((a,b)=>a+b.rep,0),dias:entries.length};
+    if(!entries.length)return{t:0,apr:0,rep:0,pot:0,tub:0,noData:true};
+    return{t:entries.reduce((a,b)=>a+b.t,0),apr:entries.reduce((a,b)=>a+b.apr,0),
+           rep:entries.reduce((a,b)=>a+b.rep,0),pot:entries.reduce((a,b)=>a+(b.pot||0),0),
+           tub:entries.reduce((a,b)=>a+(b.tub||0),0),dias:entries.length};
   }
   const d=(dias[date]||{})[name];
-  if(!d)return{t:0,apr:0,rep:0,noData:true};
+  if(!d)return{t:0,apr:0,rep:0,pot:0,tub:0,noData:true};
   return{...d,dias:1};
 }
 
@@ -238,33 +323,56 @@ function render(){
   const aP=tI?Math.round(tA/tI*100):0;
   document.getElementById('period-label').textContent=currentDate==='geral'?'período completo':'dia '+currentDate+'/2026';
   document.getElementById('kpi-grid').innerHTML=`
-    <div class="kpi-card"><div class="label">Realizadas</div><div class="val">${tI.toLocaleString('pt-BR')}</div><div class="sub">meta · ${tM.toLocaleString('pt-BR')}</div><div class="prog"><div class="prog-fill" style="width:${Math.min(100,pG)}%"></div></div></div>
-    <div class="kpi-card"><div class="label">% da meta</div><div class="val kpi-pct">${pG}%</div><div class="sub">${withData.length} com dados</div></div>
-    <div class="kpi-card"><div class="label">Status</div><div class="status-list">
-      <div class="s-item s-green"><span class="dot" style="background:#1a9e3f"></span>${sup} superou</div>
+    <div class="kpi-card"><div class="klabel">Realizadas</div><div class="kval">${tI.toLocaleString('pt-BR')}</div><div class="ksub">meta · ${tM.toLocaleString('pt-BR')}</div><div class="prog"><div class="prog-fill" style="width:${Math.min(100,pG)}%"></div></div></div>
+    <div class="kpi-card"><div class="klabel">% da meta</div><div class="kval kpi-pct">${pG}%</div><div class="ksub">${withData.length} com dados</div></div>
+    <div class="kpi-card"><div class="klabel">Status</div><div class="status-list">
+      <div class="s-item s-green"><span class="dot" style="background:#1CB85A"></span>${sup} superou</div>
       <div class="s-item s-amber"><span class="dot" style="background:#c97a00"></span>${ati} atingiu</div>
       <div class="s-item s-red"><span class="dot" style="background:#c0392b"></span>${aba} abaixo</div></div></div>
-    <div class="kpi-card"><div class="label">Aprovação</div><div class="apr-row">
-      <div class="apr-item"><div class="av" style="color:#1a9e3f">${tA}</div><div class="al">😊 apr.</div></div>
-      <div class="apr-item"><div class="av" style="color:#c0392b">${tR}</div><div class="al">😞 rep.</div></div></div>
-      <div class="prog"><div class="prog-fill" style="width:${aP}%"></div></div>
-      <div class="sub" style="margin-top:4px">${aP}% aprovação</div></div>`;
+    <div class="kpi-card"><div class="klabel">Aprovação</div><div class="apr-row">
+      <div class="apr-item"><div class="av" style="color:#1CB85A">${tA}</div><div class="al">😊 apr.</div></div>
+      <div class="apr-item"><div class="av" style="color:#c0392b">${tR}</div><div class="al">😞 rep.</div></div>
+    </div><div class="prog"><div class="prog-fill" style="width:${aP}%"></div></div><div class="ksub" style="margin-top:4px">${aP}% aprovação</div></div>`;
+
   const grid=document.getElementById('insp-grid');grid.innerHTML='';
   names.forEach(name=>{
-    const d=data[name],card=document.createElement('div');
+    const d=data[name];
+    const card=document.createElement('div');
     card.className='icard'+((!d.t)?' pending':'');
     const init=getInit(name),sl=getSetorLabel(name);
     if(!d.t){
-      card.innerHTML=`<div class="icard-hdr"><div class="icard-info"><div class="avatar">${init}</div><div class="icard-name">${name}</div></div></div><span class="setor-tag">${sl}</span><div class="pending-msg">sem dados</div>`;
+      card.innerHTML=`<div class="icard-hdr"><div class="icard-info"><div class="avatar">${init}</div><div><div class="icard-name">${name}</div><div class="icard-sub">${sl}</div></div></div></div><div class="pending-msg">sem dados</div>`;
     } else {
       const pct=Math.round(d.t/META*100),bc=pColor(pct),apc=Math.round(d.apr/d.t*100);
+      const pot=d.pot||0,tub=d.tub||0;
+      const potPct=d.t?Math.round(pot/d.t*100):0;
+      const tubPct=d.t?Math.round(tub/d.t*100):0;
       card.innerHTML=`
-        <div class="icard-hdr"><div class="icard-info"><div class="avatar">${init}</div><div class="icard-name">${name}</div></div><span class="badge ${bClass(pct)}">${bLabel(pct)}</span></div>
-        <span class="setor-tag">${sl}</span>
+        <div class="icard-hdr">
+          <div class="icard-info">
+            <div class="avatar">${init}</div>
+            <div>
+              <div class="icard-name">${name}</div>
+              <div class="icard-sub">${sl}</div>
+            </div>
+          </div>
+          <span class="badge ${bClass(pct)}">${bLabel(pct)}</span>
+        </div>
         <div class="ipct" style="color:${bc}">${pct}%</div>
         <div class="icount">${d.t} insp · meta ${META}${d.dias>1?' · '+d.dias+' dias':''}</div>
-        <div class="ibar"><div class="ibar-fill" style="width:${Math.min(100,pct)}%;background:${bc}"></div></div>
-        <div class="idetail"><span style="color:#1a9e3f">😊 ${d.apr} apr.</span><span style="color:#c0392b">😞 ${d.rep} rep.</span><span style="color:var(--muted)">${apc}% ok</span></div>
+        ${pot>0||tub>0?`
+        <div class="ibar-row">
+          <span class="ibar-label">Potência</span>
+          <div class="ibar-wrap"><div class="ibar-fill" style="width:${potPct}%;background:#378ADD"></div></div>
+          <span class="ibar-pct">${potPct}%</span>
+          <span class="ibar-count">${pot}</span>
+        </div>
+        <div class="ibar-row">
+          <span class="ibar-label">Tubular</span>
+          <div class="ibar-wrap"><div class="ibar-fill" style="width:${tubPct}%;background:#1CB85A"></div></div>
+          <span class="ibar-pct">${tubPct}%</span>
+          <span class="ibar-count">${tub}</span>
+        </div>`:''}
         <div class="ifooter">
           <div class="ifooter-item"><div class="ifooter-val">${d.t}</div><div class="ifooter-lbl">realizadas</div></div>
           <div class="ifooter-item"><div class="ifooter-val">${META}</div><div class="ifooter-lbl">meta</div></div>
@@ -277,6 +385,121 @@ function render(){
 
 function setDate(btn,d){document.querySelectorAll('.dtab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentDate=d;render();}
 function setSetor(btn,s){document.querySelectorAll('.stab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentSetor=s;render();}
+
+function showTab(tab){
+  document.getElementById('view-dash').style.display=tab==='dash'?'block':'none';
+  document.getElementById('view-rel').style.display=tab==='rel'?'block':'none';
+  document.getElementById('tab-dash').classList.toggle('active',tab==='dash');
+  document.getElementById('tab-rel').classList.toggle('active',tab==='rel');
+}
+
+/* RELATÓRIO INDIVIDUAL */
+function preencherFiltrosRelatorio(dias){
+  const inspSel=document.getElementById('rel-insp');
+  const mesSel=document.getElementById('rel-mes');
+  const deSel=document.getElementById('rel-de');
+  const ateSel=document.getElementById('rel-ate');
+
+  const todosInsp=[...new Set(Object.values(dadosGlobal.dias||{}).flatMap(d=>Object.keys(d)))];
+  inspSel.innerHTML='<option value="">Seleciona...</option>';
+  todosInsp.forEach(n=>{const o=document.createElement('option');o.value=n;o.textContent=n;inspSel.appendChild(o);});
+
+  // Meses únicos
+  const meses=[...new Set(dias.map(d=>d.split('/')[1]))].sort();
+  mesSel.innerHTML='<option value="">Todos</option>';
+  const mNomes={1:'Janeiro',2:'Fevereiro',3:'Março',4:'Abril',5:'Maio',6:'Junho',7:'Julho',8:'Agosto',9:'Setembro',10:'Outubro',11:'Novembro',12:'Dezembro'};
+  meses.forEach(m=>{const o=document.createElement('option');o.value=m;o.textContent=mNomes[parseInt(m)]||m;mesSel.appendChild(o);});
+
+  // De / Até
+  deSel.innerHTML='';ateSel.innerHTML='';
+  dias.forEach(d=>{
+    const o1=document.createElement('option');o1.value=d;o1.textContent=d;deSel.appendChild(o1);
+    const o2=document.createElement('option');o2.value=d;o2.textContent=d;ateSel.appendChild(o2);
+  });
+  if(dias.length>0)ateSel.value=dias[dias.length-1];
+
+  // Filtrar De/Até quando mudar mês
+  mesSel.onchange=()=>{
+    const m=mesSel.value;
+    const filtrados=m?dias.filter(d=>d.split('/')[1]===m):dias;
+    deSel.innerHTML='';ateSel.innerHTML='';
+    filtrados.forEach(d=>{
+      const o1=document.createElement('option');o1.value=d;o1.textContent=d;deSel.appendChild(o1);
+      const o2=document.createElement('option');o2.value=d;o2.textContent=d;ateSel.appendChild(o2);
+    });
+    if(filtrados.length>0)ateSel.value=filtrados[filtrados.length-1];
+  };
+}
+
+function gerarRelatorio(){
+  const insp=document.getElementById('rel-insp').value;
+  const de=document.getElementById('rel-de').value;
+  const ate=document.getElementById('rel-ate').value;
+
+  if(!insp){alert('Selecione um colaborador!');return;}
+
+  const dias=dadosGlobal.dias||{};
+  const allDias=Object.keys(dias).sort((a,b)=>{
+    const[da,ma]=a.split('/').map(Number),[db,mb]=b.split('/').map(Number);
+    return ma!==mb?ma-mb:da-db;
+  });
+
+  // Filtrar intervalo
+  const idxDe=allDias.indexOf(de);
+  const idxAte=allDias.indexOf(ate);
+  const diasFiltrados=allDias.slice(
+    idxDe>=0?idxDe:0,
+    idxAte>=0?idxAte+1:allDias.length
+  );
+
+  const linhas=diasFiltrados.filter(d=>dias[d]&&dias[d][insp]).map(d=>({data:d,...dias[d][insp]}));
+
+  if(!linhas.length){
+    document.getElementById('rel-summary').style.display='none';
+    document.getElementById('rel-table-wrap').innerHTML='<p style="color:var(--muted);font-family:var(--mono);font-size:12px;text-align:center;padding:30px;font-weight:600">Nenhum dado encontrado para o período selecionado.</p>';
+    return;
+  }
+
+  const totInsp=linhas.reduce((a,r)=>a+r.t,0);
+  const totApr=linhas.reduce((a,r)=>a+r.apr,0);
+  const totRep=linhas.reduce((a,r)=>a+r.rep,0);
+  const media=Math.round(totInsp/linhas.length*10)/10;
+  const pct=Math.round(media/META*100);
+  const bc=pColor(pct);
+
+  document.getElementById('rel-summary').style.display='grid';
+  document.getElementById('rel-summary').innerHTML=`
+    <div class="rel-sum-card"><div class="rsl">Inspetor</div><div class="rsv" style="font-size:13px">${insp}</div></div>
+    <div class="rel-sum-card"><div class="rsl">Performance</div><div class="rsv" style="color:${bc}">${pct}%</div></div>
+    <div class="rel-sum-card"><div class="rsl">Total / Dias</div><div class="rsv">${totInsp} <span style="font-size:13px;color:var(--muted)">/ ${linhas.length}d</span></div></div>
+    <div class="rel-sum-card"><div class="rsl">Aprovação</div><div class="rsv">${totInsp?Math.round(totApr/totInsp*100):0}%</div></div>`;
+
+  const rows=linhas.map(r=>{
+    const p=Math.round(r.t/META*100),bc2=pColor(p),apc=r.t?Math.round(r.apr/r.t*100):0;
+    const bl=p>=100?'● Superou':p>=85?'● Atingiu':'✕ Não atingiu';
+    const bstyle=p>=100?'background:#e8f5ec;color:#146b2a':p>=85?'background:#fef9e7;color:#875a00':'background:#fdecea;color:#8b1a1a';
+    return `<tr>
+      <td style="font-family:var(--mono);font-weight:700">${r.data}</td>
+      <td style="font-weight:800;color:${bc2}">${p}%</td>
+      <td style="font-weight:700">${r.t}</td>
+      <td style="color:#1CB85A;font-weight:600">😊 ${r.apr}</td>
+      <td style="color:#c0392b;font-weight:600">😞 ${r.rep}</td>
+      <td style="color:var(--muted);font-family:var(--mono)">${apc}%</td>
+      <td><span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;${bstyle};font-family:var(--mono)">${bl}</span></td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('rel-table-wrap').innerHTML=`
+    <div class="rel-table-wrap">
+      <table class="rel-table">
+        <thead><tr>
+          <th>Data</th><th>% Meta</th><th>Total</th>
+          <th>Aprovadas</th><th>Reprovadas</th><th>% Aprov.</th><th>Status</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
 
 /* UPLOAD MODAL */
 let selFile=null;
@@ -298,8 +521,7 @@ async function enviarUpload(){
     const r=await fetch(API_URL+'/upload',{method:'POST',body:form});
     const j=await r.json();
     if(r.ok&&j.sucesso){
-      ur.className='upload-result ok';
-      ur.innerHTML='✅ '+j.mensagem+'<br>Dias: '+j.dias_processados.join(', ');
+      ur.className='upload-result ok';ur.innerHTML='✅ '+j.mensagem+'<br>Dias: '+j.dias_processados.join(', ');
       bs.textContent='✓ Enviado!';
       setTimeout(()=>{fecharUpload();carregarDadosAPI();},1500);
     } else {
@@ -312,132 +534,9 @@ async function enviarUpload(){
   }
   ur.style.display='block';
 }
+
 carregarDados();
 setInterval(carregarDados,5*60*1000);
-
-function showTab(tab){
-  document.getElementById('view-dashboard').style.display = tab==='dashboard'?'block':'none';
-  document.getElementById('view-relatorio').style.display = tab==='relatorio'?'block':'none';
-  document.getElementById('tab-dashboard').style.color = tab==='dashboard'?'var(--green)':'var(--muted)';
-  document.getElementById('tab-dashboard').style.borderBottomColor = tab==='dashboard'?'var(--green)':'transparent';
-  document.getElementById('tab-relatorio').style.color = tab==='relatorio'?'var(--green)':'var(--muted)';
-  document.getElementById('tab-relatorio').style.borderBottomColor = tab==='relatorio'?'var(--green)':'transparent';
-  if(tab==='relatorio') renderRelatorio(null);
-}
-
-function renderRelatorio(inspFiltro){
-  const dias = dadosGlobal.dias||{};
-  const todosInsp = [...new Set(Object.values(dias).flatMap(d=>Object.keys(d)))];
-
-  // Botões de filtro por inspetor
-  const filtros = document.getElementById('relatorio-filtros');
-  filtros.innerHTML = '<span style="font-size:11px;color:var(--muted);font-family:var(--mono);align-self:center">Inspetor:</span>';
-  todosInsp.forEach(name=>{
-    const btn = document.createElement('button');
-    btn.textContent = name.split(' ')[0]+' '+name.split(' ')[name.split(' ').length-1];
-    btn.style.cssText = `font-family:var(--font);font-size:11px;font-weight:600;padding:5px 12px;border-radius:20px;border:1px solid var(--border);cursor:pointer;background:${inspFiltro===name?'var(--green)':'transparent'};color:${inspFiltro===name?'#fff':'var(--muted)'}`;
-    btn.onclick = ()=>renderRelatorio(name);
-    filtros.appendChild(btn);
-  });
-
-  const insp = inspFiltro || todosInsp[0];
-  if(!insp){
-    document.getElementById('relatorio-tabela').innerHTML='<p style="color:var(--muted);font-family:var(--mono);font-size:12px;text-align:center;padding:40px">Nenhum dado disponível.</p>';
-    return;
-  }
-
-  // Coletar todos os dias do inspetor
-  const linhas = Object.entries(dias)
-    .filter(([,d])=>d[insp])
-    .sort((a,b)=>{
-      const[da,ma]=a[0].split('/').map(Number),[db,mb]=b[0].split('/').map(Number);
-      return ma!==mb?ma-mb:da-db;
-    })
-    .map(([data,d])=>({data,...d[insp]}));
-
-  if(!linhas.length){
-    document.getElementById('relatorio-tabela').innerHTML=`<p style="color:var(--muted);font-family:var(--mono);font-size:12px;text-align:center;padding:40px">Sem dados para ${insp}.</p>`;
-    return;
-  }
-
-  const totalInsp = linhas.reduce((a,r)=>a+r.t,0);
-  const totalApr  = linhas.reduce((a,r)=>a+r.apr,0);
-  const totalRep  = linhas.reduce((a,r)=>a+r.rep,0);
-  const mediaDay  = Math.round(totalInsp/linhas.length*10)/10;
-  const pctMeta   = Math.round(mediaDay/META*100);
-  const bc = pColor(pctMeta);
-
-  document.getElementById('relatorio-content').innerHTML = `
-    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px">
-      <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:12px;border-top:3px solid var(--green)">
-        <div style="font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Inspetor</div>
-        <div style="font-size:14px;font-weight:700;color:var(--text)">${insp}</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px">${getSetorLabel(insp)}</div>
-      </div>
-      <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:12px;border-top:3px solid var(--green)">
-        <div style="font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Performance Geral</div>
-        <div style="font-size:22px;font-weight:700;color:${bc}">${pctMeta}%</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px">Média ${mediaDay} insp/dia · meta ${META}</div>
-      </div>
-      <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:12px;border-top:3px solid var(--green)">
-        <div style="font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Total Inspeções</div>
-        <div style="font-size:22px;font-weight:700;color:var(--green-dark)">${totalInsp}</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px">${linhas.length} dias trabalhados</div>
-      </div>
-      <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:12px;border-top:3px solid var(--green)">
-        <div style="font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Aprovação</div>
-        <div style="display:flex;gap:12px;margin-top:4px">
-          <div><span style="font-size:18px;font-weight:700;color:#1a9e3f">${totalApr}</span><div style="font-size:10px;color:var(--muted)">😊 apr.</div></div>
-          <div><span style="font-size:18px;font-weight:700;color:#c0392b">${totalRep}</span><div style="font-size:10px;color:var(--muted)">😞 rep.</div></div>
-          <div><span style="font-size:18px;font-weight:700;color:var(--green-dark)">${totalInsp?Math.round(totalApr/totalInsp*100):0}%</span><div style="font-size:10px;color:var(--muted)">aprovação</div></div>
-        </div>
-      </div>
-    </div>`;
-
-  // Tabela detalhada por dia
-  let rows = linhas.map(r=>{
-    const pct=Math.round(r.t/META*100);
-    const bc2=pColor(pct);
-    const apc=r.t?Math.round(r.apr/r.t*100):0;
-    const bLabel2=pct>=100?'▲ Superou':pct>=85?'● Atingiu':'✕ Não atingiu';
-    const bColor=pct>=100?'#e8f5ec;color:#146b2a':pct>=85?'#fef9e7;color:#875a00':'#fdecea;color:#8b1a1a';
-    return `<tr style="border-bottom:1px solid var(--border)">
-      <td style="padding:8px 10px;font-family:var(--mono);font-size:12px;font-weight:500">${r.data}</td>
-      <td style="padding:8px 10px;font-family:var(--mono);font-size:13px;font-weight:700;color:${bc2}">${pct}%</td>
-      <td style="padding:8px 10px;font-size:12px;font-weight:600">${r.t}</td>
-      <td style="padding:8px 10px;font-size:12px;color:#1a9e3f">😊 ${r.apr}</td>
-      <td style="padding:8px 10px;font-size:12px;color:#c0392b">😞 ${r.rep}</td>
-      <td style="padding:8px 10px;font-size:11px;color:var(--muted)">${apc}%</td>
-      <td style="padding:8px 10px"><span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;background:${bColor};font-family:var(--mono)">${bLabel2}</span></td>
-    </tr>`;
-  }).join('');
-
-  document.getElementById('relatorio-tabela').innerHTML = `
-    <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;overflow:hidden">
-      <table style="width:100%;border-collapse:collapse">
-        <thead>
-          <tr style="background:var(--green-light)">
-            <th style="padding:10px;text-align:left;font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;font-weight:600">Data</th>
-            <th style="padding:10px;text-align:left;font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;font-weight:600">% Meta</th>
-            <th style="padding:10px;text-align:left;font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;font-weight:600">Total</th>
-            <th style="padding:10px;text-align:left;font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;font-weight:600">Aprovadas</th>
-            <th style="padding:10px;text-align:left;font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;font-weight:600">Reprovadas</th>
-            <th style="padding:10px;text-align:left;font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;font-weight:600">% Aprov.</th>
-            <th style="padding:10px;text-align:left;font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;font-weight:600">Status</th>
-          </tr>
-        </thead>
-        <tbody>${rows}</tbody>
-      </table>
-    </div>`;
-}
-
-async function carregarDadosAPI(){
-  try{
-    const r=await fetch(API_URL+'/dados?t='+Date.now());
-    if(r.ok){dadosGlobal=await r.json();inicializar();return;}
-  }catch(e){}
-  carregarDados();
-}
 </script>
 </body>
 </html>
