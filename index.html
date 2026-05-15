@@ -4,9 +4,9 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
 <title>KPI · Qualidade · Iluminação</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
-:root{--green:#1a9e3f;--green-dark:#146b2a;--green-light:#e8f5ec;--border:#d4edda;--text:#1a2e1f;--muted:#5a7a62;--surface:#f4faf6;--white:#fff;--font:'IBM Plex Sans',sans-serif;--mono:'IBM Plex Mono',monospace}
+:root{--green:#1CB85A;--green-dark:#158a42;--green-light:#eafaf1;--border:#c3eed4;--text:#1a2e1f;--muted:#5a7a62;--surface:#f4faf6;--white:#fff;--font:'Nunito',sans-serif;--mono:'DM Mono',monospace}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{background:var(--surface);color:var(--text);font-family:var(--font);font-size:14px}
 body{min-height:100vh}
@@ -111,6 +111,12 @@ body{min-height:100vh}
   </div>
 </div>
 
+<div style="background:var(--white);border-bottom:2px solid var(--border);padding:0 16px;display:flex;gap:0">
+  <button id="tab-dashboard" onclick="showTab('dashboard')" style="font-family:var(--font);font-size:13px;font-weight:700;color:var(--green);background:none;border:none;border-bottom:3px solid var(--green);padding:12px 20px;cursor:pointer;margin-bottom:-2px">Dashboard</button>
+  <button id="tab-relatorio" onclick="showTab('relatorio')" style="font-family:var(--font);font-size:13px;font-weight:700;color:var(--muted);background:none;border:none;border-bottom:3px solid transparent;padding:12px 20px;cursor:pointer;margin-bottom:-2px">📋 Relatório Individual</button>
+</div>
+
+<div id="view-dashboard">
 <div class="date-wrap"><div class="date-scroll" id="date-tabs"></div></div>
 
 <div class="setor-wrap">
@@ -125,6 +131,17 @@ body{min-height:100vh}
   <div class="kpi-grid" id="kpi-grid"><div class="loading-msg">Carregando dados...</div></div>
   <div class="sec-hdr"><span>Inspetores</span><span id="period-label"></span></div>
   <div class="insp-grid" id="insp-grid"></div>
+</div>
+
+</div><!-- /view-dashboard -->
+
+<!-- RELATÓRIO INDIVIDUAL -->
+<div id="view-relatorio" style="display:none">
+  <div style="padding:20px 16px">
+    <div id="relatorio-content"><p style="color:var(--muted);font-family:var(--mono);font-size:12px;text-align:center;padding:40px">Selecione um inspetor abaixo para ver o relatório individual.</p></div>
+    <div id="relatorio-filtros" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px"></div>
+    <div id="relatorio-tabela"></div>
+  </div>
 </div>
 
 <!-- MODAL UPLOAD -->
@@ -297,6 +314,122 @@ async function enviarUpload(){
 }
 carregarDados();
 setInterval(carregarDados,5*60*1000);
+
+function showTab(tab){
+  document.getElementById('view-dashboard').style.display = tab==='dashboard'?'block':'none';
+  document.getElementById('view-relatorio').style.display = tab==='relatorio'?'block':'none';
+  document.getElementById('tab-dashboard').style.color = tab==='dashboard'?'var(--green)':'var(--muted)';
+  document.getElementById('tab-dashboard').style.borderBottomColor = tab==='dashboard'?'var(--green)':'transparent';
+  document.getElementById('tab-relatorio').style.color = tab==='relatorio'?'var(--green)':'var(--muted)';
+  document.getElementById('tab-relatorio').style.borderBottomColor = tab==='relatorio'?'var(--green)':'transparent';
+  if(tab==='relatorio') renderRelatorio(null);
+}
+
+function renderRelatorio(inspFiltro){
+  const dias = dadosGlobal.dias||{};
+  const todosInsp = [...new Set(Object.values(dias).flatMap(d=>Object.keys(d)))];
+
+  // Botões de filtro por inspetor
+  const filtros = document.getElementById('relatorio-filtros');
+  filtros.innerHTML = '<span style="font-size:11px;color:var(--muted);font-family:var(--mono);align-self:center">Inspetor:</span>';
+  todosInsp.forEach(name=>{
+    const btn = document.createElement('button');
+    btn.textContent = name.split(' ')[0]+' '+name.split(' ')[name.split(' ').length-1];
+    btn.style.cssText = `font-family:var(--font);font-size:11px;font-weight:600;padding:5px 12px;border-radius:20px;border:1px solid var(--border);cursor:pointer;background:${inspFiltro===name?'var(--green)':'transparent'};color:${inspFiltro===name?'#fff':'var(--muted)'}`;
+    btn.onclick = ()=>renderRelatorio(name);
+    filtros.appendChild(btn);
+  });
+
+  const insp = inspFiltro || todosInsp[0];
+  if(!insp){
+    document.getElementById('relatorio-tabela').innerHTML='<p style="color:var(--muted);font-family:var(--mono);font-size:12px;text-align:center;padding:40px">Nenhum dado disponível.</p>';
+    return;
+  }
+
+  // Coletar todos os dias do inspetor
+  const linhas = Object.entries(dias)
+    .filter(([,d])=>d[insp])
+    .sort((a,b)=>{
+      const[da,ma]=a[0].split('/').map(Number),[db,mb]=b[0].split('/').map(Number);
+      return ma!==mb?ma-mb:da-db;
+    })
+    .map(([data,d])=>({data,...d[insp]}));
+
+  if(!linhas.length){
+    document.getElementById('relatorio-tabela').innerHTML=`<p style="color:var(--muted);font-family:var(--mono);font-size:12px;text-align:center;padding:40px">Sem dados para ${insp}.</p>`;
+    return;
+  }
+
+  const totalInsp = linhas.reduce((a,r)=>a+r.t,0);
+  const totalApr  = linhas.reduce((a,r)=>a+r.apr,0);
+  const totalRep  = linhas.reduce((a,r)=>a+r.rep,0);
+  const mediaDay  = Math.round(totalInsp/linhas.length*10)/10;
+  const pctMeta   = Math.round(mediaDay/META*100);
+  const bc = pColor(pctMeta);
+
+  document.getElementById('relatorio-content').innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px">
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:12px;border-top:3px solid var(--green)">
+        <div style="font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Inspetor</div>
+        <div style="font-size:14px;font-weight:700;color:var(--text)">${insp}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">${getSetorLabel(insp)}</div>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:12px;border-top:3px solid var(--green)">
+        <div style="font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Performance Geral</div>
+        <div style="font-size:22px;font-weight:700;color:${bc}">${pctMeta}%</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">Média ${mediaDay} insp/dia · meta ${META}</div>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:12px;border-top:3px solid var(--green)">
+        <div style="font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Total Inspeções</div>
+        <div style="font-size:22px;font-weight:700;color:var(--green-dark)">${totalInsp}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">${linhas.length} dias trabalhados</div>
+      </div>
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:12px;border-top:3px solid var(--green)">
+        <div style="font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Aprovação</div>
+        <div style="display:flex;gap:12px;margin-top:4px">
+          <div><span style="font-size:18px;font-weight:700;color:#1a9e3f">${totalApr}</span><div style="font-size:10px;color:var(--muted)">😊 apr.</div></div>
+          <div><span style="font-size:18px;font-weight:700;color:#c0392b">${totalRep}</span><div style="font-size:10px;color:var(--muted)">😞 rep.</div></div>
+          <div><span style="font-size:18px;font-weight:700;color:var(--green-dark)">${totalInsp?Math.round(totalApr/totalInsp*100):0}%</span><div style="font-size:10px;color:var(--muted)">aprovação</div></div>
+        </div>
+      </div>
+    </div>`;
+
+  // Tabela detalhada por dia
+  let rows = linhas.map(r=>{
+    const pct=Math.round(r.t/META*100);
+    const bc2=pColor(pct);
+    const apc=r.t?Math.round(r.apr/r.t*100):0;
+    const bLabel2=pct>=100?'▲ Superou':pct>=85?'● Atingiu':'✕ Não atingiu';
+    const bColor=pct>=100?'#e8f5ec;color:#146b2a':pct>=85?'#fef9e7;color:#875a00':'#fdecea;color:#8b1a1a';
+    return `<tr style="border-bottom:1px solid var(--border)">
+      <td style="padding:8px 10px;font-family:var(--mono);font-size:12px;font-weight:500">${r.data}</td>
+      <td style="padding:8px 10px;font-family:var(--mono);font-size:13px;font-weight:700;color:${bc2}">${pct}%</td>
+      <td style="padding:8px 10px;font-size:12px;font-weight:600">${r.t}</td>
+      <td style="padding:8px 10px;font-size:12px;color:#1a9e3f">😊 ${r.apr}</td>
+      <td style="padding:8px 10px;font-size:12px;color:#c0392b">😞 ${r.rep}</td>
+      <td style="padding:8px 10px;font-size:11px;color:var(--muted)">${apc}%</td>
+      <td style="padding:8px 10px"><span style="font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;background:${bColor};font-family:var(--mono)">${bLabel2}</span></td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('relatorio-tabela').innerHTML = `
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:8px;overflow:hidden">
+      <table style="width:100%;border-collapse:collapse">
+        <thead>
+          <tr style="background:var(--green-light)">
+            <th style="padding:10px;text-align:left;font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;font-weight:600">Data</th>
+            <th style="padding:10px;text-align:left;font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;font-weight:600">% Meta</th>
+            <th style="padding:10px;text-align:left;font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;font-weight:600">Total</th>
+            <th style="padding:10px;text-align:left;font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;font-weight:600">Aprovadas</th>
+            <th style="padding:10px;text-align:left;font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;font-weight:600">Reprovadas</th>
+            <th style="padding:10px;text-align:left;font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;font-weight:600">% Aprov.</th>
+            <th style="padding:10px;text-align:left;font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.07em;font-weight:600">Status</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
 
 async function carregarDadosAPI(){
   try{
