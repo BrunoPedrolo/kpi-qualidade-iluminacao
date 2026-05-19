@@ -121,7 +121,33 @@
         "tub": 0,
         "pct": 19.0
       }
+    },
+    "19/05": {
+      "Jaqueline Tais Reimundo": {
+        "t": 21,
+        "apr": 13,
+        "rep": 8,
+        "pot": 0,
+        "tub": 0,
+        "pct": 100.0
+      },
+      "Marileia Goettems": {
+        "t": 16,
+        "apr": 9,
+        "rep": 7,
+        "pot": 0,
+        "tub": 0,
+        "pct": 76.2
+      },
+      "Natan Soares": {
+        "t": 8,
+        "apr": 6,
+        "rep": 2,
+        "pot": 0,
+        "tub": 0,
+        "pct": 38.1
+      }
     }
   },
-  "ultima_atualizacao": "19/05/2026 12:20"
+  "ultima_atualizacao": "19/05/2026 19:43"
 }
