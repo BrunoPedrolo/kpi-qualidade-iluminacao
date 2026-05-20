@@ -34,6 +34,22 @@
         "pot": 0,
         "tub": 0,
         "pct": 14.3
+      },
+      "Bruna Muller Travessini": {
+        "t": 1,
+        "apr": 1,
+        "rep": 0,
+        "pot": 0,
+        "tub": 0,
+        "pct": 4.8
+      },
+      "Natan Soares": {
+        "t": 8,
+        "apr": 7,
+        "rep": 1,
+        "pot": 0,
+        "tub": 0,
+        "pct": 38.1
       }
     },
     "12/05": {
@@ -149,5 +165,5 @@
       }
     }
   },
-  "ultima_atualizacao": "19/05/2026 19:43"
+  "ultima_atualizacao": "20/05/2026 17:24"
 }
