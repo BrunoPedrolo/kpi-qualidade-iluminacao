@@ -16,6 +16,14 @@
         "pot": 0,
         "tub": 0,
         "pct": 52.4
+      },
+      "Natan Soares": {
+        "t": 6,
+        "apr": 6,
+        "rep": 0,
+        "pot": 0,
+        "tub": 0,
+        "pct": 28.6
       }
     },
     "14/05": {
@@ -165,5 +173,5 @@
       }
     }
   },
-  "ultima_atualizacao": "20/05/2026 17:24"
+  "ultima_atualizacao": "20/05/2026 17:26"
 }
