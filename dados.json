@@ -171,7 +171,25 @@
         "tub": 0,
         "pct": 38.1
       }
+    },
+    "20/05": {
+      "Elen Sandi Grando": {
+        "t": 1,
+        "apr": 0,
+        "rep": 1,
+        "pot": 0,
+        "tub": 0,
+        "pct": 4.8
+      },
+      "Natan Soares": {
+        "t": 1,
+        "apr": 1,
+        "rep": 0,
+        "pot": 0,
+        "tub": 0,
+        "pct": 4.8
+      }
     }
   },
-  "ultima_atualizacao": "20/05/2026 17:30"
+  "ultima_atualizacao": "20/05/2026 17:34"
 }
