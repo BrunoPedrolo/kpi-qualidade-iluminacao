@@ -231,7 +231,49 @@
         "tub": 0,
         "pct": 28.6
       }
+    },
+    "22/05": {
+      "Bruna Muller Travessini": {
+        "t": 2,
+        "apr": 0,
+        "rep": 2,
+        "pot": 0,
+        "tub": 0,
+        "pct": 9.5
+      },
+      "Jaqueline Tais Reimundo": {
+        "t": 23,
+        "apr": 15,
+        "rep": 8,
+        "pot": 0,
+        "tub": 0,
+        "pct": 109.5
+      },
+      "Marileia Goettems": {
+        "t": 25,
+        "apr": 22,
+        "rep": 3,
+        "pot": 0,
+        "tub": 0,
+        "pct": 119.0
+      },
+      "Maristela Poter": {
+        "t": 9,
+        "apr": 2,
+        "rep": 7,
+        "pot": 0,
+        "tub": 0,
+        "pct": 42.9
+      },
+      "Natan Soares": {
+        "t": 12,
+        "apr": 4,
+        "rep": 8,
+        "pot": 0,
+        "tub": 0,
+        "pct": 57.1
+      }
     }
   },
-  "ultima_atualizacao": "25/05/2026 11:22"
+  "ultima_atualizacao": "25/05/2026 11:43"
 }
