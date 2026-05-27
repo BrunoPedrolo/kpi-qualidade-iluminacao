@@ -474,10 +474,12 @@ const inspDef = {
   'Maristela Poter':         {setor:'almo',    setorLabel:'Almoxarifado',              init:'MP'},
   'Maristela Potter':        {setor:'almo',    setorLabel:'Almoxarifado',              init:'MP'},
   'Naiara Rossa':            {setor:'almo',    setorLabel:'Almoxarifado',              init:'NR'},
-  'Eliane':                  {setor:'unidade1',setorLabel:'Unidade 1',                 init:'EL'},
-  'Junior':                  {setor:'unidade1',setorLabel:'Unidade 1',                 init:'JN'},
-  'Reinaldis':               {setor:'unidade1',setorLabel:'Unidade 1',                 init:'RE'},
+  'Eliane Nalin':            {setor:'unidade1',setorLabel:'Unidade 1',                 init:'EN'},
+  'Junior Schwerz':          {setor:'unidade1',setorLabel:'Unidade 1',                 init:'JS'},
+  'Reinaldis Farinas':       {setor:'unidade1',setorLabel:'Unidade 1',                 init:'RF'},
   'Hanikeli':                {setor:'unidade1',setorLabel:'Unidade 1',                 init:'HK'},
+  'Bruna Muller Travessini': {setor:'unidade1',setorLabel:'Unidade 1',                 init:'BM'},
+  'Elen Sandi Grando':       {setor:'unidade1',setorLabel:'Unidade 1',                 init:'ES'},
 };
 
 const getInit = n => (inspDef[n]||{}).init||(n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase());
