@@ -92,22 +92,43 @@ def processar_xlsx(file):
     df = pd.read_excel(file)
     df.columns = df.columns.str.strip()
 
-    aprovacao = df[df['Item'].astype(str).str.contains('Aprovação geral', case=False, na=False)].copy()
+    # Itens de aprovação aceitos (múltiplos formatos)
+    ITENS_APROV = [
+        'Aprovação geral da etapa inspecionada.',
+        'Aprovação da Inspeção',
+        'A inspeção foi aprovada?',
+        'Aprovação da Peça',
+    ]
+    # Respostas que indicam aprovação
+    RESPOSTAS_APROV = ['sim', 'atingiu', 'aprovado', 'aprovada', 'yes']
+    # Respostas que indicam reprovação
+    RESPOSTAS_REP   = ['não', 'nao', 'reprovado', 'reprovada', 'no', 'não atingiu']
+
+    # Filtrar registros de aprovação (qualquer um dos itens aceitos)
+    mask = df['Item'].astype(str).str.strip().isin(ITENS_APROV)
+    aprovacao = df[mask].copy()
     if len(aprovacao) == 0:
         return {}
 
     aprovacao['Data inicial'] = pd.to_datetime(aprovacao['Data inicial'], dayfirst=True, errors='coerce')
     aprovacao['Data'] = aprovacao['Data inicial'].dt.strftime('%d/%m')
 
-    nao_ids = set(df[df['Resposta'].astype(str).str.strip() == 'Não']['Código da avaliação'].unique())
-    aprovacao['resultado'] = aprovacao['Código da avaliação'].apply(
-        lambda x: 'rep' if x in nao_ids else 'apr'
-    )
+    # Resultado: rep se resposta for negativa, apr se positiva
+    def classifica(resp):
+        r = str(resp).strip().lower()
+        if r in RESPOSTAS_REP:   return 'rep'
+        if r in RESPOSTAS_APROV: return 'apr'
+        return 'apr'  # padrão: aprovar
 
-    executores = df[df['Item'].astype(str).str.contains('Executor', case=False, na=False)][
-        ['Código da avaliação', 'Resposta']
-    ].copy()
+    aprovacao['resultado'] = aprovacao['Resposta'].apply(classifica)
+
+    # Itens de executor aceitos (múltiplos formatos)
+    ITENS_EXEC = ['Executor', 'Executor da Inspeção', 'Inspetor Responsável']
+    exec_mask = df['Item'].astype(str).str.strip().isin(ITENS_EXEC)
+    executores = df[exec_mask][['Código da avaliação', 'Resposta']].copy()
     executores.columns = ['Código da avaliação', 'Inspetor']
+    # Remover duplicatas mantendo o primeiro executor por avaliação
+    executores = executores.drop_duplicates(subset=['Código da avaliação'])
     base = aprovacao.merge(executores, on='Código da avaliação', how='left')
 
     if 'Tipo de Unidade' in df.columns:
