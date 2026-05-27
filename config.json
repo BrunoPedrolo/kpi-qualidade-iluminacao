@@ -1,0 +1,19 @@
+{
+  "metas": {},
+  "parametros": {
+    "threshold_atingiu": 85,
+    "threshold_superou": 100
+  },
+  "motivos": [
+    "Falta de material",
+    "Manutenção de equipamento",
+    "Absenteísmo",
+    "Treinamento / integração",
+    "Problema no processo",
+    "Outro"
+  ],
+  "colaboradores": {},
+  "justificativas": [],
+  "senha_admin": "Zagonel@2026",
+  "ultima_atualizacao": ""
+}
