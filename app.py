@@ -131,16 +131,12 @@ def processar_xlsx(file):
     executores = executores.drop_duplicates(subset=['Código da avaliação'])
     base = aprovacao.merge(executores, on='Código da avaliação', how='left')
 
+    # Tipo de Unidade — buscar direto do df original por código de avaliação
     if 'Tipo de Unidade' in df.columns:
-        try:
-            tipos = df[['Código da avaliação', 'Tipo de Unidade']].drop_duplicates()
-            base = base.merge(tipos, on='Código da avaliação', how='left')
-        except Exception:
-            base['Tipo de Unidade'] = ''
+        tipo_map = df.drop_duplicates(subset=['Código da avaliação'])                     .set_index('Código da avaliação')['Tipo de Unidade']                     .to_dict()
+        base['Tipo de Unidade'] = base['Código da avaliação'].map(tipo_map).fillna('')
     else:
         base['Tipo de Unidade'] = ''
-
-    base['Tipo de Unidade'] = base['Tipo de Unidade'].fillna('')
 
     resultado = {}
     for (inspetor, data), grupo in base.groupby(['Inspetor', 'Data']):
