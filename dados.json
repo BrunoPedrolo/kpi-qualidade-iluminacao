@@ -469,7 +469,25 @@
         "tub": 0,
         "pct": 61.9
       }
+    },
+    "27/05": {
+      "Eliane Nalin": {
+        "t": 2,
+        "apr": 2,
+        "rep": 0,
+        "pot": 0,
+        "tub": 0,
+        "pct": 9.5
+      },
+      "Reinaldis Farinas": {
+        "t": 33,
+        "apr": 33,
+        "rep": 0,
+        "pot": 0,
+        "tub": 0,
+        "pct": 157.1
+      }
     }
   },
-  "ultima_atualizacao": "28/05/2026 14:05"
+  "ultima_atualizacao": "28/05/2026 16:39"
 }
