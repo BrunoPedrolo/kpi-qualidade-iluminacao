@@ -444,6 +444,30 @@
         "pot": 0,
         "tub": 0,
         "pct": 42.9
+      },
+      "Eliane Nalin": {
+        "t": 10,
+        "apr": 10,
+        "rep": 0,
+        "pot": 0,
+        "tub": 0,
+        "pct": 47.6
+      },
+      "Hanikeli Teodoro": {
+        "t": 5,
+        "apr": 5,
+        "rep": 0,
+        "pot": 0,
+        "tub": 0,
+        "pct": 23.8
+      },
+      "Reinaldis Farinas": {
+        "t": 13,
+        "apr": 12,
+        "rep": 1,
+        "pot": 0,
+        "tub": 0,
+        "pct": 61.9
       }
     }
   },
