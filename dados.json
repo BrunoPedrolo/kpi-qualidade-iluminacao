@@ -53,8 +53,8 @@
       },
       "Natan Soares": {
         "t": 8,
-        "apr": 7,
-        "rep": 1,
+        "apr": 8,
+        "rep": 0,
         "pot": 0,
         "tub": 0,
         "pct": 38.1
@@ -181,8 +181,8 @@
       },
       "Natan Soares": {
         "t": 8,
-        "apr": 6,
-        "rep": 2,
+        "apr": 8,
+        "rep": 0,
         "pot": 0,
         "tub": 0,
         "pct": 38.1
@@ -210,6 +210,14 @@
         "pot": 0,
         "tub": 0,
         "pct": 95.2
+      },
+      "Bruna Muller Travessini": {
+        "t": 3,
+        "apr": 3,
+        "rep": 0,
+        "pot": 0,
+        "tub": 0,
+        "pct": 14.3
       }
     },
     "20/05": {
@@ -244,6 +252,14 @@
         "pot": 0,
         "tub": 0,
         "pct": 95.2
+      },
+      "Bruna Muller Travessini": {
+        "t": 4,
+        "apr": 4,
+        "rep": 0,
+        "pot": 0,
+        "tub": 0,
+        "pct": 19.0
       }
     },
     "21/05": {
@@ -281,8 +297,8 @@
       },
       "Natan Soares": {
         "t": 6,
-        "apr": 4,
-        "rep": 2,
+        "apr": 6,
+        "rep": 0,
         "pot": 0,
         "tub": 0,
         "pct": 28.6
@@ -307,8 +323,8 @@
     "22/05": {
       "Bruna Muller Travessini": {
         "t": 2,
-        "apr": 0,
-        "rep": 2,
+        "apr": 2,
+        "rep": 0,
         "pot": 0,
         "tub": 0,
         "pct": 9.5
@@ -339,8 +355,8 @@
       },
       "Natan Soares": {
         "t": 12,
-        "apr": 4,
-        "rep": 8,
+        "apr": 12,
+        "rep": 0,
         "pot": 0,
         "tub": 0,
         "pct": 57.1
@@ -365,16 +381,16 @@
     "25/05": {
       "Bruna Muller Travessini": {
         "t": 2,
-        "apr": 0,
-        "rep": 2,
+        "apr": 2,
+        "rep": 0,
         "pot": 0,
         "tub": 0,
         "pct": 9.5
       },
       "Jaqueline Reimundo": {
         "t": 9,
-        "apr": 0,
-        "rep": 9,
+        "apr": 9,
+        "rep": 0,
         "pot": 0,
         "tub": 0,
         "pct": 42.9
@@ -415,8 +431,8 @@
     "26/05": {
       "Jaqueline Reimundo": {
         "t": 9,
-        "apr": 0,
-        "rep": 9,
+        "apr": 9,
+        "rep": 0,
         "pot": 0,
         "tub": 0,
         "pct": 42.9
@@ -527,7 +543,43 @@
         "tub": 0,
         "pct": 42.9
       }
+    },
+    "28/05": {
+      "Bruna Muller Travessini": {
+        "t": 4,
+        "apr": 4,
+        "rep": 0,
+        "pot": 0,
+        "tub": 0,
+        "pct": 19.0
+      },
+      "Natan Soares": {
+        "t": 11,
+        "apr": 11,
+        "rep": 0,
+        "pot": 0,
+        "tub": 0,
+        "pct": 52.4
+      }
+    },
+    "29/05": {
+      "Bruna Muller Travessini": {
+        "t": 3,
+        "apr": 3,
+        "rep": 0,
+        "pot": 0,
+        "tub": 0,
+        "pct": 14.3
+      },
+      "Natan Soares": {
+        "t": 7,
+        "apr": 7,
+        "rep": 0,
+        "pot": 0,
+        "tub": 0,
+        "pct": 33.3
+      }
     }
   },
-  "ultima_atualizacao": "28/05/2026 16:41"
+  "ultima_atualizacao": "23/07/2026 16:10"
 }
